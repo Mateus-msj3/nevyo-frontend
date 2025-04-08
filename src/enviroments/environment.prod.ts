@@ -6,6 +6,6 @@ export const environment = {
     ssoUrl: 'http://195.35.43.251:8081/api/v1'
   },
   ssoLoginUrl: 'http://195.35.43.251/app2/login',
-  clientId: 'dcc-client',
+  clientId: 'nvy-client',
   version: '0.0.0'
 };
