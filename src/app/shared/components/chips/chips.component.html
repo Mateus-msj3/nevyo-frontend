@@ -1,0 +1,9 @@
+<div [formGroup]="form">
+    <label [for]="controlName">{{label}}<span *ngIf="showAsterisk()" style="color: red"> *</span></label>
+
+    <p-chips [id]="inputId"
+           [formControlName]="controlName"
+           (blur)="trim()"/>
+
+    <app-error [target]="form.get(controlName)!" [label]="label"></app-error>
+</div>

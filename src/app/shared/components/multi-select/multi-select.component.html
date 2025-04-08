@@ -1,0 +1,16 @@
+<div class="md-inputfield" [formGroup]="form">
+    <label [for]="controlName">{{ label }}<span *ngIf="showAsterisk()" style="color: red">*</span></label>
+    <p-multiSelect [id]="controlName"
+                   [optionLabel]="optionLabel"
+                   [filter]="filter"
+                   [formControlName]="controlName"
+                   [options]="options"
+                   (onChange)="update()"
+                   placeholder="Select"
+                   selectedItemsLabel="{0} options selecteds"
+                   [resetFilterOnHide]="true"
+                   [maxSelectedLabels]="999">
+    </p-multiSelect>
+    <span class="ui-inputwrapper-filled"></span>
+    <app-error [target]="form.get(controlName)!" [label]="label"></app-error>
+</div>

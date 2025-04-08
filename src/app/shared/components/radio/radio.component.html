@@ -1,0 +1,16 @@
+<div class="radio-button input-field" [formGroup]="form" style="margin-top: 2px">
+    <span class="ui-inputwrapper-filled"></span>
+    <label [for]="controlName" class="float-label" style="position: relative; top: 0px">{{ label }}<span
+            *ngIf="showAsterisk()" style="color: red">*</span></label>
+    <div>
+        <ng-container *ngFor="let option of options">
+            <p-radioButton [name]="controlName" [value]="option.value"
+                           [label]="option.label" [formControlName]="controlName"
+                           (onClick)="onClickEvent(option.value)"></p-radioButton>
+            <ng-container *ngIf="!inline">
+                <br/><br/>
+            </ng-container>
+        </ng-container>
+    </div>
+    <app-error *ngIf="showError" [target]="form.get(controlName)!" [label]="label"></app-error>
+</div>

@@ -1,0 +1,20 @@
+<div style="margin-bottom: 25px">
+    <p-toolbar>
+        <div class="p-toolbar-group-start">
+            <span class="title text-900 font-bold text-xl">{{ pageTitle }}</span>
+        </div>
+        <div class="p-toolbar-group-end">
+            <button pButton pRipple type="button" icon="pi pi-upload" label="Save/Close"
+                    class="p-button-outlined p-button-primary" class="mr-2" (click)="onSaveCloseButtonAction()"></button>
+            <button pButton pRipple type="button" icon="pi pi-save" label="Save"
+                    class="p-button-outlined p-button-secondary" class="mr-2" (click)="onSaveButtonAction()"></button>
+            <button pButton pRipple type="button" icon="pi pi-delete-left" label="Close"
+                    class="p-button-outlined p-button-secondary" class="mr-2" (click)="onCloseButtonAction()"></button>
+        </div>
+    </p-toolbar>
+</div>
+<p-messages
+        [showTransitionOptions]="'500ms'"
+        [hideTransitionOptions]="'500ms'"
+        [enableService]="true">
+</p-messages>

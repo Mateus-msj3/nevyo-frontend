@@ -1,0 +1,183 @@
+<div class="grid p-fluid">
+    <div class="col-12 md:col-6">
+        <div class="card">
+            <h5>Themes</h5>
+            <div class="grid formgrid">
+                <div class="w-3 field-radiobutton" *ngFor="let theme of globalConfigService.componentThemes">
+                    <button type="button"
+                            class="cursor-pointer p-link w-2rem h-2rem border-circle flex-shrink-0 flex align-items-center justify-content-center"
+                            (click)="globalConfigService.changeTheme(theme.name)"
+                            [ngStyle]="{'background-color': theme.color}">
+                        <i *ngIf="theme.name == this.layoutService.config().theme " class="pi pi-check text-white"></i>
+                    </button>
+                    <span class="ml-2">{{ theme.name }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6">
+        <div class="card">
+            <h5>Menu Type</h5>
+            <p-selectButton [options]="globalConfigService.menuTypes"
+                            [(ngModel)]="globalConfigService.menuMode"
+                            optionLabel="name"
+                            optionValue="value"
+                            (onOptionClick)="globalConfigService.onMenuTypeSelected($event)">
+            </p-selectButton>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6">
+        <div class="card">
+            <h5>Scale</h5>
+            <div class="grid formgrid">
+                <div class="flex align-items-center">
+                    <button icon="pi pi-minus" type="button" pButton (click)="globalConfigService.decrementScale()"
+                            class="p-button-text p-button-rounded w-2rem h-2rem mr-2"
+                            [disabled]="globalConfigService.scale === globalConfigService.scales[0]"></button>
+                    <div class="flex gap-2 align-items-center">
+                        <i class="pi pi-circle-fill text-300" *ngFor="let s of globalConfigService.scales"
+                           [ngClass]="{'text-primary-500': s === globalConfigService.scale}"></i>
+                    </div>
+                    <button icon="pi pi-plus" type="button" pButton (click)="globalConfigService.incrementScale()"
+                            class="p-button-text p-button-rounded w-2rem h-2rem ml-2"
+                            [disabled]="globalConfigService.scale === globalConfigService.scales[globalConfigService.scales.length - 1]"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6">
+        <div class="card">
+            <h5>Menu Theme</h5>
+            <div class="grid formgrid">
+                <div class="col-12 md:col-4">
+                    <div class="field-radiobutton">
+                        <p-radioButton name="menuTheme" value="colorScheme" [(ngModel)]="globalConfigService.menuTheme"
+                                       inputId="menutheme-colorscheme" (onClick)="globalConfigService.onMenuThemeSelected($event)"></p-radioButton>
+                        <label for="menutheme-colorscheme">Color Scheme</label>
+                    </div>
+                </div>
+                <div class="col-12 md:col-4">
+                    <div class="field-radiobutton">
+                        <p-radioButton name="menuTheme" value="primaryColor" [(ngModel)]="globalConfigService.menuTheme"
+                                       inputId="menutheme-primarycolor" (onClick)="globalConfigService.onMenuThemeSelected($event)"></p-radioButton>
+                        <label for="menutheme-primarycolor">Primary Color</label>
+                    </div>
+                </div>
+                <div class="col-12 md:col-4">
+                    <div class="field-radiobutton">
+                        <p-radioButton name="menuTheme" value="transparent" [(ngModel)]="globalConfigService.menuTheme"
+                                       inputId="menutheme-transparent" (onClick)="globalConfigService.onMenuThemeSelected($event)"></p-radioButton>
+                        <label for="menutheme-transparent">Transparent</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6">
+        <div class="card">
+            <h5>Color Scheme</h5>
+            <div class="grid formgrid">
+                <div class="col-12 md:col-4">
+                    <div class="field-radiobutton">
+                        <p-radioButton name="colorScheme" value="light" [(ngModel)]="globalConfigService.colorScheme"
+                                       inputId="mode-light" (onClick)="globalConfigService.onColorSchemeSelected($event)"></p-radioButton>
+                        <label for="mode-light">Light</label>
+                    </div>
+                </div>
+                <div class="col-12 md:col-4">
+                    <div class="field-radiobutton">
+                        <p-radioButton name="colorScheme" value="dim" [(ngModel)]="globalConfigService.colorScheme"
+                                       inputId="mode-dim" (onClick)="globalConfigService.onColorSchemeSelected($event)"></p-radioButton>
+                        <label for="mode-dim">Dim</label>
+                    </div>
+                </div>
+                <div class="col-12 md:col-4">
+                    <div class="field-radiobutton">
+                        <p-radioButton name="colorScheme"
+                                       value="dark" [(ngModel)]="globalConfigService.colorScheme"
+                                       inputId="mode-dark"
+                                       (onClick)="globalConfigService.onColorSchemeSelected($event)">
+                        </p-radioButton>
+                        <label for="mode-dark">Dark</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6">
+        <div class="card">
+            <h5>Input Style</h5>
+            <div class="grid formgrid">
+                <div class="col-12 md:col-4">
+                    <div class="field-radiobutton flex-1">
+                        <p-radioButton name="inputStyle"
+                                       value="outlined"
+                                       [(ngModel)]="globalConfigService.inputStyle"
+                                       inputId="outlined_input"
+                                       (onClick)="globalConfigService.onInputStyleSelected($event)">
+                        </p-radioButton>
+                        <label for="outlined_input">Outlined</label>
+                    </div>
+                </div>
+                <div class="col-12 md:col-4">
+                    <div class="field-radiobutton flex-1">
+                        <p-radioButton
+                                name="inputStyle"
+                                value="filled"
+                                [(ngModel)]="globalConfigService.inputStyle"
+                                inputId="filled_input" (onClick)="globalConfigService.onInputStyleSelected($event)">
+                        </p-radioButton>
+                        <label for="filled_input">Filled</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-12">
+        <div class="card">
+            <h5>Preferences</h5>
+            <div class="grid formgrid">
+                <div class="col-12 md:col-4" *ngFor="let preference of globalConfigService.preferences">
+                    <div class="field-checkbox">
+                        <p-checkbox
+                                name="{{preference.name}}"
+                                [binary]="true"
+                                [(ngModel)]="preference.value"
+                                (ngModelChange)="globalConfigService.updatePreference(preference.name, $event)"
+                                id="{{preference.name}}">
+                        </p-checkbox>
+                        <label for="{{preference.name}}">{{preference.label}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6">
+        <div class="card">
+            <h5>Idiomas</h5>
+            <p-selectButton [options]="globalConfigService.languages"
+                            [(ngModel)]="globalConfigService.selectedLanguage"
+                            optionLabel="name"
+                            optionValue="value"
+                            (onOptionClick)="globalConfigService.onLanguageChanged($event)">
+                <ng-template let-language pTemplate>
+                    <img width="30" height="30"[src]="language.icon"/>
+                    <label class="ml-2">{{ language.name }}</label>
+                </ng-template>
+            </p-selectButton>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-12">
+        <div class="card">
+            <p-button icon="pi pi-save" label="Save" (onClick)="globalConfigService.onSaveButtonAction()" [text]="true" [raised]="true" />
+        </div>
+    </div>
+</div>

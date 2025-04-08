@@ -1,0 +1,26 @@
+<div [formGroup]="form">
+    <label [for]="controlName">{{label}}<span *ngIf="showAsterisk()" style="color: red"> *</span></label>
+
+    <!-- Renderizar input normal se não houver máscara -->
+    <input *ngIf="!mask"
+           #input pInputText
+           [id]="inputId"
+           [formControlName]="controlName"
+           [type]="type"
+           [value]="value"
+           (blur)="trim()"
+           [maxLength]="limite"
+           autocomplete="off" />
+
+    <!-- Renderizar input com máscara se houver máscara -->
+    <p-inputMask *ngIf="mask"
+                 #input pInputMask
+                 [id]="inputId"
+                 [formControlName]="controlName"
+                 [type]="type"
+                 [mask]="mask"
+                 (blur)="trim()"
+                 autocomplete="off"></p-inputMask>
+
+    <app-error [target]="form.get(controlName)!" [label]="label"></app-error>
+</div>

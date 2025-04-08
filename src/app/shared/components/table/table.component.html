@@ -1,0 +1,34 @@
+<div class="card">
+    <p-table #dt [value]="data" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,25,50]"
+             [globalFilterFields]="globalFilterFields" [responsiveLayout]="'scroll'">
+        <ng-template pTemplate="caption">
+            <div class="flex justify-content-between">
+            <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Global Search" />
+            </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <ng-container *ngFor="let col of columns">
+                    <th pSortableColumn="{{col.field}}">{{col.header}}
+                        <p-sortIcon field="{{col.field}}"></p-sortIcon>
+                    </th>
+                </ng-container>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+            <tr>
+                <ng-container *ngFor="let col of columns">
+                    <td>{{ row[col.field] }}</td>
+                </ng-container>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-outlined"
+                            (click)="edit.emit(row)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

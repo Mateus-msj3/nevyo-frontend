@@ -1,0 +1,14 @@
+<p-dialog [header]="dialogConfig.header"
+          [(visible)]="dialogConfig.visible"
+          [modal]="true"
+          [style]="{width: dialogConfig.width, height: dialogConfig.height}"
+          [dismissableMask]="true">
+    <form [formGroup]="form">
+        <ng-content></ng-content>
+        <div class="flex justify-content-end mt-4">
+            <button pButton pRipple class="p-button-primary w-8rem mr-3" icon="pi pi-search" label="Filter" (click)="filter.emit()"></button>
+            <button pButton pRipple class="p-button-outlined w-8rem mr-3" icon="pi pi-eraser" label="Clear" (click)="clear.emit()"></button>
+            <button pButton pRipple class="p-button-outlined w-8rem mr-3" icon="pi pi-times" label="Cancel" (click)="cancel.emit()"></button>
+        </div>
+    </form>
+</p-dialog>

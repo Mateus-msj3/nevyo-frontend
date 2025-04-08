@@ -1,0 +1,19 @@
+<div [formGroup]="form">
+    <label [for]="controlName">{{ label }}<span *ngIf="showAsterisk()" style="color: red">*</span></label>
+    <p-calendar name="{{controlName}}"
+                [showButtonBar]="true"
+                formControlName="{{controlName}}"
+                [readonlyInput]="readonlyInput"
+                [monthNavigator]="monthNavigator"
+                [yearNavigator]="yearNavigator"
+                [dateFormat]="'dd/mm/yy'"
+                [yearRange]="yearRange"
+                [showIcon]="showIcon"
+                (onSelect)="selectDate()"
+                (onBlur)="onBlur()"
+                (onClearClick)="onClearClick()"
+                [maxDate]="maxDate"
+                [minDate]="minDate">
+    </p-calendar>
+    <app-error [target]="form.get(controlName)!"></app-error>
+</div>

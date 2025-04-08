@@ -1,0 +1,9 @@
+<div class="input-switch input-field" [formGroup]="form">
+    <div class="label-container">
+        <label [for]="controlName" class="switch-label">{{ label }}</label>
+    </div>
+    <div class="switch-container">
+        <p-inputSwitch [formControlName]="controlName" (onChange)="onChangeEvent($event)"></p-inputSwitch>
+    </div>
+    <app-error *ngIf="showError" [target]="form.get(controlName)!" [label]="label"></app-error>
+</div>

@@ -1,0 +1,18 @@
+<div class="input-field" [formGroup]="form">
+    <span class="ui-inputwrapper-filled"></span>
+    <label [ngStyle]="{'font-size': styleLabel}">{{ label }}</label>
+    <div class="ui-g form-group">
+        <div *ngFor="let option of options; index as ind;" [class]="classColumns">
+            <p-checkbox
+                    [id]="name+'_'+ind"
+                    [name]="name"
+                    [value]="option.value"
+                    [inputId]="name+'_'+ind"
+                    [label]="option.label"
+                    [formControl]="formControl!">
+            </p-checkbox>
+        </div>
+    </div>
+
+    <app-error *ngIf="showError && formControl" [target]="formControl" [label]="label"></app-error>
+</div>

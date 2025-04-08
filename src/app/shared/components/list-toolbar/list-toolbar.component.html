@@ -1,0 +1,26 @@
+<div style="margin-bottom: 25px">
+    <p-toolbar>
+        <div class="p-toolbar-group-start">
+          <!-- Ícone dinâmico -->
+          <i [ngClass]="iconClass" class="mr-2 mt-2"></i>
+            <span class="title text-900 font-bold text-xl">{{ pageTitle }}</span>
+        </div>
+        <div class="p-toolbar-group-end">
+            <button pButton pRipple type="button" icon="pi pi-search" label="Filter"
+                    class="p-button-outlined p-button-primary" class="mr-2" (click)="onFilterButtonAction()"
+                    *ngIf="showFilterButton"></button>
+            <button pButton pRipple type="button" icon="pi pi-plus-circle" label="New"
+                    class="p-button-outlined p-button-secondary" class="mr-2" (click)="onNewButtonAction()"
+                    *ngIf="showNewButton"></button>
+            <button pButton pRipple type="button" icon="pi pi-eraser" label="Clear"
+                    class="p-button-outlined p-button-secondary" class="mr-2" (click)="onClearButtonAction()"
+                    *ngIf="showClearButton"></button>
+        </div>
+    </p-toolbar>
+</div>
+<p-messages
+        [showTransitionOptions]="'500ms'"
+        [hideTransitionOptions]="'500ms'"
+        [enableService]="true">
+</p-messages>
+

@@ -1,0 +1,21 @@
+<div [ngClass]="{'card': isCard}">
+    <span class="p-fluid">
+        <label>{{ label }}<span *ngIf="showAsterisk" style="color: red"> *</span></label>
+        <p-autoComplete
+                [suggestions]="users"
+                (completeMethod)="search($event)"
+                (onSelect)="onUserSelected($event)"
+                [minLength]="3"
+                [showClear]="true"
+                [showEmptyMessage]="true"
+                optionLabel="firstname"
+                emptyMessage="No results found"
+                placeholder="Search by first name, last name or email">
+            <ng-template let-user pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ fullName }}</div>
+                </div>
+            </ng-template>
+        </p-autoComplete>
+    </span>
+</div>

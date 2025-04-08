@@ -1,0 +1,20 @@
+<div [formGroup]="form">
+  <label [for]="controlName">{{ label }}<span *ngIf="showAsterisk()" style="color: red">*</span></label>
+  <p-dropdown [id]="controlName"
+              [optionLabel]="optionLabel"
+              [formControlName]="controlName"
+              [filter]="filter"
+              [ngClass]="{'ng-invalid': form.get(controlName)?.invalid,
+                            'ng-dirty': form.get(controlName)?.dirty,
+                            'ng-touched': form.get(controlName)?.touched}"
+              [options]="options"
+              [resetFilterOnHide]="true"
+              [showClear]="true"
+              [virtualScroll]="virtualScroll"
+              [virtualScrollItemSize]="virtualScrollItemSize"
+              [virtualScrollOptions]="virtualScrollOptions"
+              placeholder="Select">
+  </p-dropdown>
+  <span class="ui-inputwrapper-filled" *ngIf="form.get(controlName)?.value != null"></span>
+  <app-error [target]="form.get(controlName)!" [label]="label"></app-error>
+</div>

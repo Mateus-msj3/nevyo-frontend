@@ -1,0 +1,18 @@
+.input-switch {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.label-container {
+  margin-bottom: 0.5rem; /* Espaço entre o label e o switch */
+}
+
+.switch-label {
+  display: block;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+}

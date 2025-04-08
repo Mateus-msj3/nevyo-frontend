@@ -1,0 +1,15 @@
+.switch-container {
+  margin-top: 0px; /* Ajuste o valor conforme necessário */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switch-container app-switch {
+  flex: 1;
+  margin-right: 1px; /* Espaço entre os switches */
+}
+
+.switch-container app-switch:last-child {
+  margin-right: 0;
+}
