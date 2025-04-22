@@ -17,27 +17,37 @@ export class AppMenuComponent implements OnInit {
         routerLink: ['/dashboard']
       },
       {
-        label: 'Library',
-        icon: 'fa-regular fa-folder-open',
-        routerLink: ['/library']
+        label: 'Clientes',
+        icon: 'pi pi-users',
+        routerLink: ['/customers']
       },
       {
-        label: 'Categories',
-        icon: 'fa-solid fa-list-alt',
-        routerLink: ['/categories']
+        label: 'Pedidos',
+        icon: 'pi pi-shopping-cart',
+        routerLink: ['/orders']
       },
       {
-        label: 'Reader',
-        icon: 'fa-solid fa-book-open-reader',
-        routerLink: ['/reading-progress-history']
+        label: 'Kits',
+        icon: 'pi pi-box',
+        routerLink: ['/kits']
       },
       {
-        label: 'Reading Goal',
-        icon: 'fa-solid fa-bullseye',
-        routerLink: ['/reading-goals']
+        label: 'Produtos',
+        icon: 'pi pi-tags',
+        routerLink: ['/products']
       },
       {
-        label: 'Preferences',
+        label: 'Disponibilidade',
+        icon: 'pi pi-calendar',
+        routerLink: ['/availability']
+      },
+      {
+        label: 'Estoque',
+        icon: 'pi pi-database',
+        routerLink: ['/inventory']
+      },
+      {
+        label: 'Configurações',
         icon: 'fas fa-tools',
         routerLink: ['/configurations'],
       }

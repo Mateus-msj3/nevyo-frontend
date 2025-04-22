@@ -49,26 +49,26 @@ export class AppSidebarComponent {
     const basePath = '../../assets/layout/images';
 
     // Nome do arquivo do logo baseado na cor
-    const logoColor = isLightTheme ? `DocCave-${color}` : `DocCave-${color}-dark`;
+    const logoColor = isLightTheme ? `nevyo-${color}` : `nevyo-${color}-dark`;
 
     // Definição do logo baseado no menu selecionado
     switch (menuMode) {
       case MenuModeEnum.SlimPlus:
         return `${basePath}/${logoColor}.png`;
       case MenuModeEnum.Static:
-        return `${basePath}/DocCave-${color}.png`;
+        return `${basePath}/nevyo-${color}.png`;
       case MenuModeEnum.Horizontal:
-        return `${basePath}/DocCave-${color}.png`;
+        return `${basePath}/nevyo-${color}.png`;
       case MenuModeEnum.Slim:
-        return `${basePath}/DocCave-${color}.png`;
+        return `${basePath}/nevyo-${color}.png`;
       case MenuModeEnum.Overlay:
-        return `${basePath}/DocCave-${color}.png`;
+        return `${basePath}/nevyo-${color}.png`;
       case MenuModeEnum.Reveal:
-        return `${basePath}/DocCave-${color}.png`;
+        return `${basePath}/nevyo-${color}.png`;
       case MenuModeEnum.Drawer:
-        return `${basePath}/DocCave-${color}.png`;
+        return `${basePath}/nevyo-${color}.png`;
       default:
-        return `${basePath}/DocCave-default.png`;
+        return `${basePath}/nevyo-default.png`;
     }
   }
 
