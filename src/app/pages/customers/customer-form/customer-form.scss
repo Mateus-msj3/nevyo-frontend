@@ -1,0 +1,42 @@
+
+:host ::ng-deep {
+  .p-inputgroup {
+    .p-password {
+      width: 100%;
+
+      input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    .p-button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  // Ajustes para alinhar o campo CEP
+  .p-inputgroup {
+    .p-inputtext {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+    }
+  }
+
+  // Estilo para o label ficar consistente
+  .field {
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+  }
+}
+
+.image-profile {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}

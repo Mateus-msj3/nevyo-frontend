@@ -1,0 +1,179 @@
+<app-list-toolbar [iconClass]="'fa-solid fa-users'"
+                  [pageTitle]="'Customer Management'"
+                  [showFilterButton]="true"
+                  (filterButtonAction)="filter()"
+                  (newButtonAction)="onNew()"
+                  (clearButtonAction)="onClear()">
+</app-list-toolbar>
+
+<!-- Filter Panel -->
+<div class="card">
+  <p-panel header="Advanced Filters" [toggleable]="true">
+    <form [formGroup]="resourceForm">
+      <div class="p-4">
+        <div class="grid p-fluid formgrid">
+          <!-- Personal Information -->
+          <div class="col-12 mb-2">
+            <h5>Personal Information</h5>
+          </div>
+          <div class="col-3 field">
+            <app-input label="First Name" controlName="firstName" [form]="resourceForm"></app-input>
+          </div>
+          <div class="col-3 field">
+            <app-input label="Last Name" controlName="lastName" [form]="resourceForm"></app-input>
+          </div>
+          <div class="col-3 field">
+            <app-input label="CPF/CNPJ" controlName="cpfOrCnpj" [form]="resourceForm" mask="CPF_CNPJ"></app-input>
+          </div>
+          <div class="col-3 field">
+            <app-input label="Phone Number" controlName="phoneNumber" [form]="resourceForm" mask="(00) 00000-0000"></app-input>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="col-12 mb-2">
+            <h5>Contact Information</h5>
+          </div>
+          <div class="col-6 field">
+            <app-input label="Email" controlName="email" [form]="resourceForm"></app-input>
+          </div>
+          <div class="col-6 field">
+            <app-dropdown [options]="typeUserOptions"
+                          [form]="resourceForm"
+                          controlName="typeUser"
+                          label="Type User">
+            </app-dropdown>
+          </div>
+
+          <!-- Address Information -->
+          <div class="col-12 mb-2">
+            <h5>Location</h5>
+          </div>
+          <div class="col-3 field">
+            <app-input label="ZIP Code" controlName="zipCode" [form]="resourceForm"></app-input>
+          </div>
+          <div class="col-3 field">
+            <app-input label="City" controlName="city" [form]="resourceForm"></app-input>
+          </div>
+          <div class="col-3 field">
+            <app-input label="State" controlName="state" [form]="resourceForm"></app-input>
+          </div>
+
+          <!-- Account Status -->
+          <div class="col-12 mb-2">
+            <h5>Account Status</h5>
+          </div>
+          <div class="col-3 field">
+            <p-checkbox formControlName="enabled" label="Active Accounts Only" [binary]="true"></p-checkbox>
+          </div>
+          <div class="col-3 field">
+            <p-checkbox formControlName="accountLocked" label="Show Locked Accounts" [binary]="true"></p-checkbox>
+          </div>
+
+          <!-- Actions -->
+          <div class="col-12 flex justify-content-end mt-4">
+            <button pButton pRipple class="p-button-primary w-auto mr-3"
+                    icon="pi pi-search" label="Apply Filters"
+                    (click)="filter()"></button>
+            <button pButton pRipple class="p-button-outlined w-auto"
+                    icon="pi pi-eraser" label="Clear Filters"
+                    (click)="clearFormFilter()"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </p-panel>
+</div>
+
+<!-- Results Table -->
+<div class="card">
+  <p-table #dt
+           [value]="page?.content || []"
+           [paginator]="true"
+           [lazy]="true"
+           [rows]="ITENS_PER_PAGE"
+           [pageLinks]="3"
+           [rowsPerPageOptions]="[10,25,50]"
+           [totalRecords]="page?.totalElements! || 0"
+           [globalFilterFields]="['firstName','lastName','email','cpfOrCnpj']"
+           (onPage)="search($event)"
+           responsiveLayout="scroll"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} customers"
+           [rowHover]="true"
+           dataKey="id">
+
+    <!-- Global Search -->
+    <ng-template pTemplate="caption">
+      <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+        <span class="p-input-icon-left w-full sm:w-20rem flex-order-1 sm:flex-order-0">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="onGlobalFilter(dt, $event)"
+                 placeholder="Search customers..." class="w-full"/>
+        </span>
+      </div>
+    </ng-template>
+
+    <!-- Table Header -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:5%">Profile</th>
+        <th pSortableColumn="firstName" style="width:15%">Name
+          <p-sortIcon field="firstName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="cpfOrCnpj" style="width:12%">Document
+          <p-sortIcon field="cpfOrCnpj"></p-sortIcon>
+        </th>
+        <th pSortableColumn="email" style="width:15%">Email
+          <p-sortIcon field="email"></p-sortIcon>
+        </th>
+        <th pSortableColumn="phoneNumber" style="width:10%">Phone
+          <p-sortIcon field="phoneNumber"></p-sortIcon>
+        </th>
+        <th pSortableColumn="city" style="width:10%">City
+          <p-sortIcon field="city"></p-sortIcon>
+        </th>
+        <th pSortableColumn="typeUser" style="width:8%">Type
+          <p-sortIcon field="typeUser"></p-sortIcon>
+        </th>
+        <th style="width:8%">Status</th>
+        <th style="width:10%">Actions</th>
+      </tr>
+    </ng-template>
+
+    <!-- Table Body -->
+    <ng-template pTemplate="body" let-customer>
+      <tr>
+        <td>
+          <p-avatar [image]="customer.urlImageProfile || 'assets/layout/images/default-user.png'"
+                    styleClass="mr-2" size="large" shape="circle"></p-avatar>
+        </td>
+        <td>{{ customer.firstName }} {{ customer.lastName }}</td>
+        <td>{{ customer.cpfOrCnpj | mask:'CPF_CNPJ' }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.phoneNumber | mask:'(00) 00000-0000' }}</td>
+        <td>{{ customer.city }}/{{ customer.state }}</td>
+        <td>
+          <p-tag [value]="customer.typeUser"
+                 [severity]="customer.typeUser === 'CUSTOMER' ? 'info' : 'warning'">
+          </p-tag>
+        </td>
+        <td>
+          <p-tag [value]="customer.enabled ? 'Active' : 'Inactive'"
+                 [severity]="customer.enabled ? 'success' : 'danger'">
+          </p-tag>
+        </td>
+        <td>
+          <div class="flex gap-2">
+            <p-button icon="pi pi-pencil"
+                      class="mr-2"
+                      severity="primary"
+                      title="Edit"
+                      [rounded]="true"
+                      [outlined]="true"
+                      [routerLink]="[customer.id, 'edit']">
+            </p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

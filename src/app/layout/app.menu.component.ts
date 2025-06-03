@@ -1,5 +1,4 @@
-import {OnInit} from '@angular/core';
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-menu',
@@ -17,12 +16,12 @@ export class AppMenuComponent implements OnInit {
         routerLink: ['/dashboard']
       },
       {
-        label: 'Clientes',
+        label: 'Customers',
         icon: 'pi pi-users',
         routerLink: ['/customers']
       },
       {
-        label: 'Pedidos',
+        label: 'Orders',
         icon: 'pi pi-shopping-cart',
         routerLink: ['/orders']
       },
@@ -32,22 +31,22 @@ export class AppMenuComponent implements OnInit {
         routerLink: ['/kits']
       },
       {
-        label: 'Produtos',
+        label: 'Products',
         icon: 'pi pi-tags',
         routerLink: ['/products']
       },
       {
-        label: 'Disponibilidade',
+        label: 'Availability',
         icon: 'pi pi-calendar',
         routerLink: ['/availability']
       },
       {
-        label: 'Estoque',
+        label: 'Inventory',
         icon: 'pi pi-database',
         routerLink: ['/inventory']
       },
       {
-        label: 'Configurações',
+        label: 'Settings',
         icon: 'fas fa-tools',
         routerLink: ['/configurations'],
       }

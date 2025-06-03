@@ -22,6 +22,7 @@ import {InputGroupAddonModule} from "primeng/inputgroupaddon";
 import {InputGroupModule} from "primeng/inputgroup";
 import {FileSizePipe} from "./pipes/file-size.pipe";
 import {DateDiffPipe} from "./pipes/date-diff.pipe";
+import {NgxMaskModule} from "ngx-mask";
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import {DateDiffPipe} from "./pipes/date-diff.pipe";
     PRIMENG_IMPORTS,
     ReactiveFormsModule,
     InputGroupAddonModule,
-    InputGroupModule
+    InputGroupModule,
+    NgxMaskModule.forChild(),
   ],
   exports: [
     PRIMENG_IMPORTS,

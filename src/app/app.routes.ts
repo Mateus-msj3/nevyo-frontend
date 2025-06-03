@@ -13,6 +13,12 @@ export const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       {
+        path: 'customers',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./pages/customers/customer.module').then(m => m.CustomerModule),
+        data: {breadcrumb: 'Customers'}
+      },
+      {
         path: 'configurations',
         canActivate: [AuthGuard],
         loadChildren: () => import('./pages/configurations/configurations.module').then(m => m.ConfigurationsModule),

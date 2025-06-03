@@ -1,0 +1,128 @@
+<app-edit-toolbar [pageTitle]="pageTitle"
+                  (saveCloseButtonAction)="saveAndClose()"
+                  (saveButtonAction)="save()"
+                  (closeButtonAction)="onClose()">
+</app-edit-toolbar>
+
+<div class="flex mb-2 gap-2 justify-content-end">
+  <p-button
+    *ngFor="let tab of [0, 1]; let i = index"
+    (onClick)="activeIndex = tab"
+    [rounded]="true"
+    styleClass="w-2rem h-2rem p-0"
+    [outlined]="activeIndex !== tab"
+    [label]="(i + 1).toString()"/>
+</div>
+
+<form [formGroup]="resourceForm" (submit)="submitForm()">
+  <p-tabView [(activeIndex)]="activeIndex">
+    <!-- Personal Information Tab -->
+    <p-tabPanel header="Personal Information">
+      <div class="card">
+        <div class="p-fluid p-formgrid grid">
+          <div class="field col-12 md:col-12">
+            <div class="flex flex-column align-items-center">
+              <img [src]="urlImageProfile ? urlImageProfile : 'assets/layout/images/user.png'"
+                   alt="Photo Profile User"
+                   class="image-profile mb-5 ml-0">
+              <p-fileUpload
+                mode="basic"
+                chooseLabel="Choose"
+                accept="image/*"
+                chooseIcon="pi pi-upload"
+                [fileLimit]="10"
+                (onSelect)="onSelect($event)"
+                [multiple]="false"
+                [showCancelButton]="false"
+                [showUploadButton]="false"
+                [maxFileSize]="10000000">
+              </p-fileUpload>
+            </div>
+          </div>
+          <div class="field col-12 md:col-6">
+            <app-input label="First Name" controlName="firstName" [form]="resourceForm"></app-input>
+          </div>
+          <div class="field col-12 md:col-6">
+            <app-input label="Last Name" controlName="lastName" [form]="resourceForm"></app-input>
+          </div>
+          <div class="field col-12 md:col-4">
+            <app-input label="CPF or CNPJ" controlName="cpfOrCnpj" [form]="resourceForm" mask="CPF_CNPJ">
+            </app-input>
+          </div>
+          <div class="field col-12 md:col-4">
+            <app-calendar label="Date of Birth" controlName="dateOfBirth" [form]="resourceForm"></app-calendar>
+          </div>
+          <div class="field col-12 md:col-4">
+            <app-input label="Phone Number" controlName="phoneNumber" [form]="resourceForm"
+                       mask="(00) 00000-0000"></app-input>
+          </div>
+          <div class="field col-12 md:col-4">
+            <app-input label="Email" controlName="email" [form]="resourceForm"></app-input>
+          </div>
+          <div class="field col-12 md:col-4" *ngIf="!isEditMode()">
+            <label>Password</label>
+            <div class="p-inputgroup">
+              <p-password formControlName="password" [feedback]="false" [toggleMask]="true"
+                          autocomplete="off"></p-password>
+              <p-button icon="pi pi-key" (onClick)="Util.generatePassword(resourceForm, 'password')"
+                        class="p-button-outlined"></p-button>
+            </div>
+          </div>
+          <div class="field col-12 md:col-4" *ngIf="!isEditMode()">
+            <app-dropdown [options]="typeUserOptions"
+                          [form]="resourceForm"
+                          controlName="typeUser"
+                          label="Type User">
+            </app-dropdown>
+          </div>
+          <div class="field col-12">
+            <app-switch label="Account Locked" controlName="accountLocked" [form]="resourceForm"></app-switch>
+            <app-switch label="Enabled" controlName="enabled" [form]="resourceForm"></app-switch>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+
+    <!-- Address Tab -->
+    <p-tabPanel header="Address">
+      <div class="card">
+        <div class="p-fluid p-formgrid grid">
+          <div class="field col-12 md:col-3">
+            <label>Zip Code</label>
+            <div class="p-inputgroup">
+              <input type="text" pInputText
+                     formControlName="zipCode"
+                     mask="99999-999"
+                     placeholder="Zip Code"
+                     [class.ng-invalid]="resourceForm.get('zipCode')?.invalid && resourceForm.get('zipCode')?.touched"
+                     [class.ng-dirty]="resourceForm.get('zipCode')?.touched">
+              <p-button icon="pi pi-search"
+                        (onClick)="searchZipCode()"
+                        [disabled]="!resourceForm.get('zipCode')?.valid"
+                        class="p-button-outlined">
+              </p-button>
+            </div>
+          </div>
+          <div class="field col-12 md:col-7">
+            <app-input label="Street" controlName="street" [form]="resourceForm"></app-input>
+          </div>
+          <div class="field col-12 md:col-2">
+            <app-input label="Number" controlName="number" [form]="resourceForm"></app-input>
+          </div>
+          <div class="field col-12 md:col-4">
+            <app-input label="Complement" controlName="complement" [form]="resourceForm"></app-input>
+          </div>
+          <div class="field col-12 md:col-4">
+            <app-input label="District" controlName="district" [form]="resourceForm"></app-input>
+          </div>
+          <div class="field col-12 md:col-4">
+            <app-input label="City" controlName="city" [form]="resourceForm"></app-input>
+          </div>
+          <div class="field col-12 md:col-4">
+            <app-input label="State" controlName="state" [form]="resourceForm"></app-input>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+</form>
