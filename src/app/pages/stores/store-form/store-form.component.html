@@ -1,0 +1,249 @@
+<app-edit-toolbar [pageTitle]="pageTitle"
+                  (saveCloseButtonAction)="saveAndClose()"
+                  (saveButtonAction)="save()"
+                  (closeButtonAction)="onClose()">
+</app-edit-toolbar>
+
+<!-- Stepper Navigation -->
+<div class="stepper-nav mb-4">
+  <div class="flex justify-content-center">
+    <p-steps [model]="[
+      {label: 'Basic Information'},
+      {label: 'Media'},
+      {label: 'Location'},
+      {label: 'Settings'}
+    ]" [activeIndex]="activeIndex" [readonly]="false"
+    (activeIndexChange)="activeIndex = $event">
+    </p-steps>
+  </div>
+</div>
+
+<form [formGroup]="resourceForm" (submit)="submitForm()">
+  <div [ngSwitch]="activeIndex">
+    <!-- Basic Information -->
+    <div *ngSwitchCase="0" class="card">
+      <div class="grid p-fluid">
+        <div class="col-12 md:col-6">
+          <div class="card h-full">
+            <h5>Store Information</h5>
+            <div class="field">
+              <app-input label="Store Name" controlName="name" [form]="resourceForm"></app-input>
+            </div>
+            <div class="field">
+              <app-input label="Slug" controlName="slug" [form]="resourceForm"></app-input>
+            </div>
+            <div class="field">
+              <label>About</label>
+              <textarea pInputTextarea formControlName="about"
+                        [rows]="5" [autoResize]="true"
+                        class="w-full"
+                        placeholder="Enter store description">
+              </textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="card h-full">
+            <h5>Contact Information</h5>
+            <div class="field">
+              <app-input label="Email" controlName="email" [form]="resourceForm"></app-input>
+            </div>
+            <div class="field">
+              <app-input label="Phone" controlName="phone" [form]="resourceForm" mask="(00) 0000-0000"></app-input>
+            </div>
+            <div class="field">
+              <app-input label="WhatsApp" controlName="whatsapp" [form]="resourceForm" mask="(00) 00000-0000"></app-input>
+            </div>
+            <div class="field">
+              <app-input label="Instagram" controlName="instagram" [form]="resourceForm">
+                <ng-template #prefix>
+                  <i class="pi pi-instagram"></i>
+                </ng-template>
+              </app-input>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Media -->
+    <div *ngSwitchCase="1" class="card">
+      <div class="grid">
+        <!-- Logo Upload -->
+        <div class="col-12 md:col-4">
+          <div class="card">
+            <h5>Store Logo</h5>
+            <div class="flex flex-column align-items-center">
+              <div class="image-preview mb-3">
+                <img [src]="resource ? resource.logoUrl : 'assets/layout/images/store-default.png'"
+                     alt="Logo" class="w-full rounded-lg shadow-2">
+              </div>
+              <p-fileUpload mode="basic"
+                           chooseLabel="Choose Logo"
+                           accept="image/*"
+                           [maxFileSize]="1000000"
+                           (onSelect)="onImageSelect($event, 'logo')"
+                           [showUploadButton]="false"
+                           styleClass="p-button-outlined">
+              </p-fileUpload>
+            </div>
+          </div>
+        </div>
+
+        <!-- Banner Upload -->
+        <div class="col-12 md:col-4">
+          <div class="card">
+            <h5>Store Banner</h5>
+            <div class="flex flex-column align-items-center">
+              <div class="image-preview mb-3">
+                <img [src]="resource ? resource.bannerUrl : 'assets/layout/images/banner-default.png'"
+                     alt="Banner" class="w-full rounded-lg shadow-2">
+              </div>
+              <p-fileUpload mode="basic"
+                           chooseLabel="Choose Banner"
+                           accept="image/*"
+                           [maxFileSize]="1000000"
+                           (onSelect)="onImageSelect($event, 'banner')"
+                           [showUploadButton]="false"
+                           styleClass="p-button-outlined">
+              </p-fileUpload>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flag Upload -->
+        <div class="col-12 md:col-4">
+          <div class="card">
+            <h5>Store Flag</h5>
+            <div class="flex flex-column align-items-center">
+              <div class="image-preview mb-3">
+                <img [src]="resource ? resource.flagUrl : 'assets/layout/images/flag-default.png'"
+                     alt="Flag" class="w-full rounded-lg shadow-2">
+              </div>
+              <p-fileUpload mode="basic"
+                           chooseLabel="Choose Flag"
+                           accept="image/*"
+                           [maxFileSize]="1000000"
+                           (onSelect)="onImageSelect($event, 'flag')"
+                           [showUploadButton]="false"
+                           styleClass="p-button-outlined">
+              </p-fileUpload>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location -->
+    <div *ngSwitchCase="2" class="card">
+      <div class="grid p-fluid">
+        <div class="col-12">
+          <div class="card">
+            <h5>Address</h5>
+            <div class="grid">
+              <!-- Campo de CEP -->
+              <div class="col-12 md:col-3 zip-code-group">
+                <app-input label="ZIP Code" controlName="zipCode" [form]="resourceForm" mask="00000-000"></app-input>
+                <button pButton type="button"
+                        icon="pi pi-search"
+                        (click)="searchZipCode()"
+                        class="p-button-outlined"
+                        pTooltip="Search ZIP Code"
+                        tooltipPosition="top">
+                </button>
+              </div>
+              <div class="col-12 md:col-6">
+                <app-input label="Street" controlName="street" [form]="resourceForm"></app-input>
+              </div>
+              <div class="col-12 md:col-3">
+                <app-input label="Number" controlName="number" [form]="resourceForm"></app-input>
+              </div>
+              <div class="col-12 md:col-4">
+                <app-input label="Complement" controlName="complement" [form]="resourceForm"></app-input>
+              </div>
+              <div class="col-12 md:col-4">
+                <app-input label="District" controlName="district" [form]="resourceForm"></app-input>
+              </div>
+              <div class="col-12 md:col-2">
+                <app-input label="City" controlName="city" [form]="resourceForm"></app-input>
+              </div>
+              <div class="col-12 md:col-2">
+                <app-input label="State" controlName="state" [form]="resourceForm"></app-input>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div *ngSwitchCase="3" class="card">
+      <div class="grid p-fluid">
+        <!-- Campos de horário na seção Settings -->
+        <div class="col-12 md:col-6">
+          <div class="card">
+            <h5>Operating Hours</h5>
+            <div class="grid">
+              <div class="col-6">
+                <label>Open Time</label>
+                <p-calendar formControlName="openTime"
+                           [timeOnly]="true"
+                           [showTime]="true"
+                           [showSeconds]="false"
+                           inputId="timeonly"
+                           [stepMinute]="5"
+                           [style]="{'width':'100%'}"
+                           placeholder="Select time">
+                </p-calendar>
+              </div>
+              <div class="col-6">
+                <label>Close Time</label>
+                <p-calendar formControlName="closeTime"
+                           [timeOnly]="true"
+                           [showTime]="true"
+                           [showSeconds]="false"
+                           inputId="timeonly"
+                           [stepMinute]="5"
+                           [style]="{'width':'100%'}"
+                           placeholder="Select time">
+                </p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="card">
+            <h5>General Settings</h5>
+            <div class="field">
+              <app-input label="Maximum Kits per Pickup" type="number"
+                        controlName="maxKitsPerPickup" [form]="resourceForm"></app-input>
+            </div>
+            <div class="field">
+              <app-dropdown [options]="themeOptions" [form]="resourceForm"
+                          controlName="theme" label="Theme"></app-dropdown>
+            </div>
+            <div class="field">
+              <app-switch label="Active Store" controlName="active" [form]="resourceForm"></app-switch>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="flex justify-content-between mt-4">
+    <p-button label="Previous" icon="pi pi-chevron-left"
+              (onClick)="activeIndex = activeIndex - 1"
+              [disabled]="activeIndex === 0"
+              styleClass="p-button-outlined"></p-button>
+
+    <p-button [label]="activeIndex === 3 ? 'Finish' : 'Next'"
+              [icon]="activeIndex === 3 ? 'pi pi-check' : 'pi pi-chevron-right'"
+              (onClick)="activeIndex = activeIndex + 1"
+              [disabled]="activeIndex === 3"
+              [styleClass]="activeIndex === 3 ? 'p-button-success' : ''"></p-button>
+  </div>
+</form>

@@ -13,10 +13,10 @@ import {SelectItem} from "primeng/api";
 
 @Component({
   selector: 'app-customer-form',
-  templateUrl: './customer-list.html',
-  styleUrl: './customer-list.scss'
+  templateUrl: './customer-list.component.html',
+  styleUrl: './customer-list.component.scss'
 })
-export class CustomerList extends BaseResourceListComponent<Customer> {
+export class CustomerListComponent extends BaseResourceListComponent<Customer> {
 
   filterParams: FilterParams = new FilterParams('0', new SortParams('firstName', 0));
 

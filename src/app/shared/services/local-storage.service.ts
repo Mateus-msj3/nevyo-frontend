@@ -72,4 +72,8 @@ export class LocalStorageService {
   setUserInfo(user: User ) {
     localStorage.setItem('userId', <string>user.id);
   }
+
+  removeItem(item: string) {
+    localStorage.removeItem(item);
+  }
 }

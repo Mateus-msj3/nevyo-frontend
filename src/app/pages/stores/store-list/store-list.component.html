@@ -1,0 +1,188 @@
+<app-list-toolbar [iconClass]="'fa-solid fa-store'"
+                  [pageTitle]="'Store Management'"
+                  [showFilterButton]="true"
+                  (filterButtonAction)="filter()"
+                  (newButtonAction)="onNew()"
+                  (clearButtonAction)="onClear()">
+</app-list-toolbar>
+
+<!-- Filter Panel -->
+<div class="card">
+  <p-panel header="Advanced Filters" [toggleable]="true">
+    <form [formGroup]="resourceForm">
+      <div class="p-4">
+        <div class="grid p-fluid formgrid">
+          <!-- Basic Information -->
+          <div class="col-12 mb-2">
+            <h5>Basic Information</h5>
+          </div>
+          <div class="col-6 field">
+            <app-input label="Store Name" controlName="name" [form]="resourceForm"></app-input>
+          </div>
+          <div class="col-6 field">
+            <app-input label="Slug" controlName="slug" [form]="resourceForm"></app-input>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="col-12 mb-2">
+            <h5>Contact Information</h5>
+          </div>
+          <div class="col-4 field">
+            <app-input label="Email" controlName="email" [form]="resourceForm"></app-input>
+          </div>
+          <div class="col-4 field">
+            <app-input label="Phone" controlName="phone" [form]="resourceForm" mask="(00) 0000-0000"></app-input>
+          </div>
+          <div class="col-4 field">
+            <app-input label="WhatsApp" controlName="whatsapp" [form]="resourceForm" mask="(00) 00000-0000"></app-input>
+          </div>
+
+          <!-- Operating Hours -->
+          <div class="col-12 mb-2">
+            <h5>Operating Hours</h5>
+          </div>
+          <div class="col-6 field">
+            <app-input label="Open Time" controlName="openTime" [form]="resourceForm" mask="00:00"></app-input>
+          </div>
+          <div class="col-6 field">
+            <app-input label="Close Time" controlName="closeTime" [form]="resourceForm" mask="00:00"></app-input>
+          </div>
+
+          <!-- Location -->
+          <div class="col-12 mb-2">
+            <h5>Location</h5>
+          </div>
+          <div class="col-4 field">
+            <app-input label="ZIP Code" controlName="zipCode" [form]="resourceForm" mask="00000-000"></app-input>
+          </div>
+          <div class="col-4 field">
+            <app-input label="City" controlName="city" [form]="resourceForm"></app-input>
+          </div>
+          <div class="col-4 field">
+            <app-input label="State" controlName="state" [form]="resourceForm"></app-input>
+          </div>
+
+          <!-- Settings -->
+          <div class="col-12 mb-2">
+            <h5>Settings</h5>
+          </div>
+          <div class="col-4 field">
+            <app-dropdown [options]="themeOptions"
+                          [form]="resourceForm"
+                          controlName="theme"
+                          label="Theme">
+            </app-dropdown>
+          </div>
+          <div class="col-4 field">
+            <label class="block mb-2">Status</label>
+            <div class="flex align-items-center">
+              <p-checkbox formControlName="active" [binary]="true"></p-checkbox>
+              <label class="ml-2">Active Stores Only</label>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="col-12 flex justify-content-end mt-4">
+            <button pButton pRipple class="p-button-primary w-auto mr-3"
+                    icon="pi pi-search" label="Apply Filters"
+                    (click)="filter()"></button>
+            <button pButton pRipple class="p-button-outlined w-auto"
+                    icon="pi pi-eraser" label="Clear Filters"
+                    (click)="clearFormFilter()"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </p-panel>
+</div>
+
+<!-- Results Table -->
+<div class="card">
+  <p-table #dt
+           [value]="page?.content || []"
+           [paginator]="true"
+           [lazy]="true"
+           [rows]="ITENS_PER_PAGE"
+           [pageLinks]="3"
+           [rowsPerPageOptions]="[10,25,50]"
+           [totalRecords]="page?.totalElements! || 0"
+           [globalFilterFields]="['name','email','phone']"
+           (onPage)="search($event)"
+           responsiveLayout="scroll"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} stores"
+           [rowHover]="true"
+           dataKey="id">
+
+    <!-- Global Search -->
+    <ng-template pTemplate="caption">
+      <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+        <span class="p-input-icon-left w-full sm:w-20rem">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="onGlobalFilter(dt, $event)"
+                 placeholder="Search stores..." class="w-full"/>
+        </span>
+      </div>
+    </ng-template>
+
+    <!-- Table Header -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:5%">Logo</th>
+        <th pSortableColumn="name" style="width:20%">Name
+          <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="email" style="width:15%">Email
+          <p-sortIcon field="email"></p-sortIcon>
+        </th>
+        <th style="width:15%">Contact</th>
+        <th style="width:15%">Hours</th>
+        <th pSortableColumn="city" style="width:15%">Location
+          <p-sortIcon field="city"></p-sortIcon>
+        </th>
+        <th style="width:7%">Status</th>
+        <th style="width:8%">Actions</th>
+      </tr>
+    </ng-template>
+
+    <!-- Table Body -->
+    <ng-template pTemplate="body" let-store>
+      <tr>
+        <td>
+          <p-avatar [image]="store.logoUrl || 'assets/layout/images/store-default.png'"
+                    styleClass="mr-2" size="large" shape="circle"></p-avatar>
+        </td>
+        <td>{{ store.name }}</td>
+        <td>{{ store.email }}</td>
+        <td>
+          <div class="flex flex-column">
+            <small>
+              <i class="pi pi-phone text-green-500 mr-1"></i>
+              {{ store.phone | mask:'(00) 0000-0000' }}
+            </small>
+            <small *ngIf="store.whatsapp">
+              <i class="pi pi-whatsapp text-green-500 mr-1"></i>
+              {{ store.whatsapp | mask:'(00) 00000-0000' }}
+            </small>
+          </div>
+        </td>
+        <td>{{ store.openTime | mask:'00:00' }} - {{ store.closeTime | mask:'00:00' }}</td>
+        <td>{{ store.city }}/{{ store.state }}</td>
+        <td>
+          <p-tag [value]="store.active ? 'Active' : 'Inactive'"
+                 [severity]="store.active ? 'success' : 'danger'">
+          </p-tag>
+        </td>
+        <td>
+          <div class="flex gap-2">
+            <p-button icon="pi pi-pencil"
+                      severity="primary"
+                      [rounded]="true"
+                      [outlined]="true"
+                      [routerLink]="[store.id, 'edit']">
+            </p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

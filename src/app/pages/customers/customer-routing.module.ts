@@ -1,21 +1,21 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
-import {CustomerForm} from "./customer-form/customer-form";
-import {CustomerList} from "./customer-list/customer-list";
+import {CustomerListComponent} from "./customer-list/customer-list.component";
+import {CustomerFormComponent} from "./customer-form/customer-form.component";
 
 const routes: Routes = [
   {
     path: '',
-    component: CustomerList,
+    component: CustomerListComponent,
   },
   {
     path: 'new',
-    component: CustomerForm,
+    component: CustomerFormComponent,
     data: {breadcrumb: 'New Customer'}
   },
   {
     path: ':id/edit',
-    component: CustomerForm,
+    component: CustomerFormComponent,
   }
 ];
 

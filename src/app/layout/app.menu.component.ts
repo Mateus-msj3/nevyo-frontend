@@ -46,6 +46,11 @@ export class AppMenuComponent implements OnInit {
         routerLink: ['/inventory']
       },
       {
+        label: 'Stores',
+        icon: 'fa-solid fa-store',
+        routerLink: ['/stores']
+      },
+      {
         label: 'Settings',
         icon: 'fas fa-tools',
         routerLink: ['/configurations'],

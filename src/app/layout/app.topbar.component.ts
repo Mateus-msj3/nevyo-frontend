@@ -60,6 +60,7 @@ export class AppTopbarComponent implements OnInit {
 
   onLogout() {
     this.localStorageService.clearToken();
+    this.localStorageService.removeItem('selectedStore');
     window.location.href = this.buildSsoLoginUrl();
   }
 

@@ -1,14 +1,13 @@
-import {Injectable} from "@angular/core";
-import {LocalStorageService} from "../../shared/services/local-storage.service";
-import {Router} from "@angular/router";
-import {CustomMessageService} from "../../shared/services/custom-message.service";
-import {environment} from "../../../enviroments/environment";
+import { Injectable } from '@angular/core';
+import { Router, CanActivate, CanActivateChild } from '@angular/router';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { CustomMessageService } from '../../shared/services/custom-message.service';
+import { environment } from '../../../enviroments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard {
-
+export class AuthGuard implements CanActivate, CanActivateChild {
   private readonly ssoLoginUrl = environment.ssoLoginUrl;
   private readonly clientId = environment.clientId;
 
@@ -21,19 +20,25 @@ export class AuthGuard {
   canActivate(): boolean {
     if (this.localStorageService.isLoggedIn()) {
       if (this.localStorageService.isTokenExpired()) {
-        this.customMessageService.showWarning("Seu tempo de acesso expirou", "É necessário realizar um novo login!");
-        window.location.href = this.buildSsoLoginUrl(); // Redireciona para o SSO com client_id
+        this.customMessageService.showWarning(
+          "Seu tempo de acesso expirou",
+          "É necessário realizar um novo login!"
+        );
+        window.location.href = this.buildSsoLoginUrl();
         return false;
       }
       return true;
     } else {
-      window.location.href = this.buildSsoLoginUrl(); // Redireciona para o SSO com client_id
+      window.location.href = this.buildSsoLoginUrl();
       return false;
     }
+  }
+
+  canActivateChild(): boolean {
+    return this.canActivate();
   }
 
   private buildSsoLoginUrl(): string {
     return `${this.ssoLoginUrl}?client_id=${this.clientId}`;
   }
 }
-

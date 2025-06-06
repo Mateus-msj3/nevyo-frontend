@@ -48,7 +48,7 @@ export class AuthCallbackComponent implements OnInit {
           this.localStorageService.setToken(response.access_token);
           this.localStorageService.setItem('userId', this.userId);
           this.globalConfigurationService.findConfigurationByUser();
-          this.router.navigate(['/']);
+          this.router.navigate(['/select-store']);
         },
         error: () => {
           // Redireciona para login se houver erro

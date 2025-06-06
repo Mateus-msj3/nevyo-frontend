@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import {AppLayoutComponent} from "./layout/app.layout.component";
 import {AuthCallbackComponent} from "./core/componentes/auth/auth-callback.component";
 import {AuthGuard} from "./core/guards/auth.guard";
+import {StoreSelectorComponent} from "./core/componentes/store-selector/store-selector.component";
+import {StoreSelectedGuard} from "./core/guards/store-selected.guard";
 
 export const routes: Routes = [
   {
@@ -9,22 +11,34 @@ export const routes: Routes = [
     component: AuthCallbackComponent,
   },
   {
+    path: 'select-store',
+    component: StoreSelectorComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: '',
     component: AppLayoutComponent,
+    canActivate: [AuthGuard, StoreSelectedGuard],
     children: [
       {
         path: 'customers',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, StoreSelectedGuard],
         loadChildren: () => import('./pages/customers/customer.module').then(m => m.CustomerModule),
         data: {breadcrumb: 'Customers'}
       },
       {
+        path: 'stores',
+        canActivate: [AuthGuard, StoreSelectedGuard],
+        loadChildren: () => import('./pages/stores/store.module').then(m => m.StoreModule),
+        data: {breadcrumb: 'Stores'}
+      },
+      {
         path: 'configurations',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, StoreSelectedGuard],
         loadChildren: () => import('./pages/configurations/configurations.module').then(m => m.ConfigurationsModule),
         data: {breadcrumb: 'Configurations'}
       },
     ],
   },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: 'select-store' },
 ];

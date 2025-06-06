@@ -1,0 +1,194 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: var(--surface-ground);
+}
+
+:host ::ng-deep {
+  // Estilo para o campo de pesquisa
+  .p-input-icon-left {
+    width: 100%;
+
+    input {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+
+      &:focus {
+        box-shadow: 0 0 0 2px var(--surface-ground), 0 0 0 4px var(--primary-color);
+      }
+    }
+
+    i {
+      left: 0.75rem;
+      color: var(--text-color-secondary);
+    }
+  }
+
+  // Estilo para os botões
+  .p-button {
+    &.p-button-outlined {
+      &:hover {
+        background: var(--primary-color);
+        color: var(--primary-color-text);
+        border-color: var(--primary-color);
+      }
+    }
+  }
+
+  // Estilo para o Avatar
+  .p-avatar {
+    &.p-avatar-xlarge {
+      width: 8rem;
+      height: 8rem;
+    }
+  }
+
+  // Estilo para o Tooltip
+  .p-tooltip {
+    font-size: 0.875rem;
+  }
+
+  // Estilo para o Skeleton
+  .p-skeleton {
+    border-radius: var(--border-radius);
+  }
+}
+
+// Estilos para o card da loja
+.store-card {
+  transition: all 0.3s ease;
+  border: 1px solid var(--surface-border);
+  background: var(--surface-card);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .store-info {
+    margin: 1rem 0;
+
+    .store-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .store-location {
+      color: var(--text-color-secondary);
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// Badge de status
+.status-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-card);
+  border: 2px solid var(--surface-border);
+  transition: all 0.3s ease;
+
+  &.active {
+    color: var(--green-500);
+    border-color: var(--green-500);
+    background: var(--green-50);
+  }
+
+  &:not(.active) {
+    color: var(--red-500);
+    border-color: var(--red-500);
+    background: var(--red-50);
+  }
+
+  i {
+    font-size: 14px;
+  }
+}
+
+// Animação de entrada para os cards
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Aplicando a animação
+.store-card {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+// Media queries para responsividade
+@media screen and (max-width: 768px) {
+  :host ::ng-deep {
+    .p-avatar {
+      &.p-avatar-xlarge {
+        width: 6rem;
+        height: 6rem;
+      }
+    }
+  }
+
+  .store-card {
+    padding: 1rem;
+
+    .store-info {
+      .store-name {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+// Estilo para o container principal
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+// Estilo para o header
+.header-logo {
+  img {
+    max-width: 150px;
+    height: auto;
+  }
+}
+
+// Estilo para o footer
+.footer {
+  background: var(--surface-card);
+  border-top: 1px solid var(--surface-border);
+  padding: 1rem;
+  margin-top: auto;
+
+  small {
+    color: var(--text-color-secondary);
+  }
+}
+.header-logo {
+  img {
+    max-width: 200px;
+    height: auto;
+    background: transparent;
+  }
+}

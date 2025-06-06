@@ -12,10 +12,10 @@ import {SelectItem} from "primeng/api";
 
 @Component({
   selector: 'app-customer-form',
-  templateUrl: './customer-form.html',
-  styleUrl: './customer-form.scss'
+  templateUrl: './customer-form.component.html',
+  styleUrl: './customer-form.component.scss'
 })
-export class CustomerForm extends BaseResourceFormComponent<Customer> {
+export class CustomerFormComponent extends BaseResourceFormComponent<Customer> {
 
   activeIndex: number = 0;
 

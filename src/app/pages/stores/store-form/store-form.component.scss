@@ -1,0 +1,35 @@
+:host ::ng-deep {
+  // ... outros estilos ...
+
+  .p-steps {
+    .p-steps-item {
+      .p-menuitem-link {
+        padding: 1rem 2rem; // Aumenta o espaçamento entre os steps
+      }
+
+      .p-steps-number {
+        border-radius: 50%;
+        margin-right: 0.5rem; // Adiciona espaço entre o número e o texto
+      }
+
+      .p-steps-title {
+        white-space: nowrap; // Evita quebra de linha no texto
+      }
+    }
+  }
+
+  // Ajuste para o campo de CEP com botão
+  .zip-code-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.1rem;
+
+    .p-inputgroup {
+      flex: 1;
+    }
+
+    .p-button {
+      margin-top: 1.45rem; // Alinha com o input considerando o label
+    }
+  }
+}
