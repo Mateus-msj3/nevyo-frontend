@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {User} from "../models/user";
 
+export let id = undefined;
+
 
 const TOKEN_KEY = 'token';
 

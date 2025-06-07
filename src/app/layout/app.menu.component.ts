@@ -31,6 +31,11 @@ export class AppMenuComponent implements OnInit {
         routerLink: ['/kits']
       },
       {
+        label: 'Categories',
+        icon: 'pi pi-sitemap',
+        routerLink: ['/categories']
+      },
+      {
         label: 'Products',
         icon: 'pi pi-tags',
         routerLink: ['/products']

@@ -1,0 +1,35 @@
+:host ::ng-deep {
+  .p-steps {
+    .p-steps-item {
+      .p-menuitem-link {
+        padding: 1rem 2rem;
+      }
+
+      .p-steps-number {
+        border-radius: 50%;
+        margin-right: 0.5rem;
+      }
+
+      .p-steps-title {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .card {
+    background: var(--surface-card);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow: var(--card-shadow);
+
+    h5 {
+      margin: 0 0 1.5rem 0;
+      color: var(--primary-color);
+    }
+  }
+
+  .p-inputtext, .p-inputtextarea {
+    width: 100%;
+  }
+}

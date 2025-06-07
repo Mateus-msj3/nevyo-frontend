@@ -23,6 +23,10 @@ export class StoreStateService {
     );
   }
 
+  getSelectedStore(): Store | null {
+    return JSON.parse(this.localStorageService.getItem('selectedStore') || '{}');
+  }
+
   setSelectedStore(store: Store): void {
     this.localStorageService.setItem('selectedStore', JSON.stringify(store));
     this.selectedStore.next(store);

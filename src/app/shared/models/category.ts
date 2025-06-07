@@ -1,10 +1,11 @@
 import {BaseResourceModel} from "../abastracts/base-resource-model";
+import {Store} from "./store";
 
 export class Category extends BaseResourceModel {
 
     constructor(public name?: string,
                 public description?: string,
-                public userId?: string
+                public store?: Store
                 ) {
         super();
     }
