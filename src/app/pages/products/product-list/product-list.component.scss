@@ -1,0 +1,21 @@
+:host ::ng-deep {
+  .product-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .card {
+    background: var(--surface-card);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow: var(--card-shadow);
+
+    h5 {
+      margin: 0 0 1.5rem 0;
+      color: var(--primary-color);
+    }
+  }
+}

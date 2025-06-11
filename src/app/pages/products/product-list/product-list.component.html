@@ -1,0 +1,169 @@
+<!-- product-list.component.html -->
+<app-list-toolbar [iconClass]="'fa-solid fa-box'"
+                  [pageTitle]="'Product Management'"
+                  [showFilterButton]="true"
+                  (filterButtonAction)="filter()"
+                  (newButtonAction)="onNew()"
+                  (clearButtonAction)="onClear()">
+</app-list-toolbar>
+
+<!-- Filter Panel -->
+<div class="card">
+  <p-panel header="Advanced Filters" [toggleable]="true">
+    <form [formGroup]="resourceForm">
+      <div class="p-4">
+        <div class="grid p-fluid formgrid">
+          <!-- Basic Information -->
+          <div class="col-12 mb-2">
+            <h5>Product Information</h5>
+          </div>
+          <div class="col-3 field">
+            <app-input label="SKU" controlName="sku" [form]="resourceForm"></app-input>
+          </div>
+          <div class="col-3 field">
+            <app-input label="Name" controlName="name" [form]="resourceForm"></app-input>
+          </div>
+          <div class="col-3 field">
+            <app-dropdown [options]="categories" optionLabel="name" optionValue="id"
+                        [form]="resourceForm" controlName="categoryId"
+                        label="Category"></app-dropdown>
+          </div>
+          <div class="col-3 field">
+            <app-dropdown [options]="genderOptions"
+                        [form]="resourceForm"
+                        controlName="gender"
+                        label="Gender"></app-dropdown>
+          </div>
+
+          <!-- Price Range -->
+          <div class="col-12 mb-2">
+            <h5>Price Range</h5>
+          </div>
+          <div class="col-6 field">
+            <app-input label="Minimum Price" controlName="minPrice"
+                      [form]="resourceForm" type="number" prefix="R$"></app-input>
+          </div>
+          <div class="col-6 field">
+            <app-input label="Maximum Price" controlName="maxPrice"
+                      [form]="resourceForm" type="number" prefix="R$"></app-input>
+          </div>
+
+          <!-- Additional Filters -->
+          <div class="col-12 mb-2">
+            <h5>Additional Filters</h5>
+          </div>
+          <div class="col-4 field">
+            <p-checkbox formControlName="isAccessory"
+                       label="Show Only Accessories" [binary]="true"></p-checkbox>
+          </div>
+          <div class="col-4 field">
+            <p-checkbox formControlName="active"
+                       label="Show Only Active Products" [binary]="true"></p-checkbox>
+          </div>
+
+          <!-- Actions -->
+          <div class="col-12 flex justify-content-end mt-4">
+            <button pButton pRipple class="p-button-primary w-auto mr-3"
+                    icon="pi pi-search" label="Apply Filters"
+                    (click)="filter()"></button>
+            <button pButton pRipple class="p-button-outlined w-auto"
+                    icon="pi pi-eraser" label="Clear Filters"
+                    (click)="onClear()"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </p-panel>
+</div>
+
+<!-- Results Table -->
+<div class="card">
+  <p-table #dt
+           [value]="page?.content || []"
+           [paginator]="true"
+           [lazy]="true"
+           [rows]="ITENS_PER_PAGE"
+           [pageLinks]="3"
+           [rowsPerPageOptions]="[10,25,50]"
+           [totalRecords]="page?.totalElements! || 0"
+           [globalFilterFields]="['sku','name','category.name']"
+           (onPage)="search($event)"
+           responsiveLayout="scroll"
+           [rowHover]="true"
+           dataKey="id">
+
+    <!-- Global Search -->
+    <ng-template pTemplate="caption">
+      <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+        <span class="p-input-icon-left w-full sm:w-20rem">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="onGlobalFilter(dt, $event)"
+                 placeholder="Search products..." class="w-full"/>
+        </span>
+      </div>
+    </ng-template>
+
+    <!-- Table Header -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:10%">Image</th>
+        <th pSortableColumn="sku" style="width:10%">SKU
+          <p-sortIcon field="sku"></p-sortIcon>
+        </th>
+        <th pSortableColumn="name" style="width:20%">Name
+          <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="price" style="width:10%">Price
+          <p-sortIcon field="price"></p-sortIcon>
+        </th>
+        <th style="width:15%">Stock</th>
+        <th pSortableColumn="category.name" style="width:15%">Category
+          <p-sortIcon field="category.name"></p-sortIcon>
+        </th>
+        <th style="width:10%">Status</th>
+        <th style="width:10%">Actions</th>
+      </tr>
+    </ng-template>
+
+    <!-- Table Body -->
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>
+          <img [src]="product.images?.[0]?.imageUrl || 'assets/layout/images/product-placeholder.png'"
+               alt="Product Image" class="product-image"/>
+        </td>
+        <td>{{ product.sku }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price | currency:'BRL' }}</td>
+        <td>
+          <div class="flex flex-column">
+            <small>Store: {{ product.quantityStore }}</small>
+            <small>Site: {{ product.quantitySite }}</small>
+          </div>
+        </td>
+        <td>{{ product.category?.name }}</td>
+        <td>
+          <p-tag [value]="product.active ? 'Active' : 'Inactive'"
+                 [severity]="product.active ? 'success' : 'danger'">
+          </p-tag>
+        </td>
+        <td>
+          <div class="flex gap-2">
+            <p-button icon="pi pi-pencil"
+                      severity="primary"
+                      [rounded]="true"
+                      [outlined]="true"
+                      [routerLink]="[product.id, 'edit']">
+            </p-button>
+            <p-button icon="pi pi-trash"
+                      severity="danger"
+                      [rounded]="true"
+                      [outlined]="true"
+                      (onClick)="deleteResource(product)">
+            </p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

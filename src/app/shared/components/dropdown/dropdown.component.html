@@ -2,6 +2,7 @@
   <label [for]="controlName">{{ label }}<span *ngIf="showAsterisk()" style="color: red">*</span></label>
   <p-dropdown [id]="controlName"
               [optionLabel]="optionLabel"
+              [optionValue]="optionValue"
               [formControlName]="controlName"
               [filter]="filter"
               [ngClass]="{'ng-invalid': form.get(controlName)?.invalid,

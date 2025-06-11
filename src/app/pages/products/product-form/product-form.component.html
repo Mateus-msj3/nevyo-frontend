@@ -1,0 +1,215 @@
+<app-edit-toolbar [pageTitle]="pageTitle"
+                  (saveCloseButtonAction)="saveAndClose()"
+                  (saveButtonAction)="save()"
+                  (closeButtonAction)="onClose()">
+</app-edit-toolbar>
+
+<!-- Stepper -->
+<div class="card mb-4">
+  <p-steps [model]="[
+    {label: 'Basic Information'},
+    {label: 'Images'},
+    {label: 'Sizes'},
+    {label: 'Settings'}
+  ]" [activeIndex]="activeIndex" [readonly]="false"
+  (activeIndexChange)="activeIndex = $event">
+  </p-steps>
+</div>
+
+<form [formGroup]="resourceForm" (submit)="submitForm()">
+  <div [ngSwitch]="activeIndex">
+    <!-- Basic Information -->
+    <div *ngSwitchCase="0" class="card">
+      <div class="grid p-fluid">
+        <div class="col-12 md:col-6">
+          <div class="card">
+            <h5>Product Information</h5>
+            <div class="field" *ngIf="isEditMode()">
+              <app-input label="SKU" controlName="sku" [form]="resourceForm" [disabled]="true"></app-input>
+            </div>
+            <div class="field">
+              <app-input label="Name" controlName="name" [form]="resourceForm"></app-input>
+            </div>
+            <div class="field">
+              <label>Description</label>
+              <textarea pInputTextarea formControlName="description"
+                        [rows]="5" [autoResize]="true"
+                        class="w-full"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="card">
+            <h5>Pricing & Stock</h5>
+            <div class="field">
+              <app-input label="Price" controlName="price" type="number"
+                        [form]="resourceForm" prefix="R$"></app-input>
+            </div>
+            <div class="grid">
+              <div class="col-6">
+                <app-input label="Store Stock" controlName="quantityStore"
+                          type="number" [form]="resourceForm"></app-input>
+              </div>
+              <div class="col-6">
+                <app-input label="Website Stock" controlName="quantitySite"
+                          type="number" [form]="resourceForm"></app-input>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mt-3">
+            <h5>Classification</h5>
+            <div class="field">
+              <app-dropdown [options]="categories" optionLabel="name" optionValue="id"
+                          [form]="resourceForm" controlName="categoryId"
+                          label="Category"></app-dropdown>
+            </div>
+            <div class="field">
+              <app-dropdown [options]="genderOptions" [form]="resourceForm"
+                          controlName="gender" label="Gender" optionValue="value"></app-dropdown>
+            </div>
+            <div class="field">
+              <app-switch label="Is Accessory" controlName="isAccessory"
+                         [form]="resourceForm"></app-switch>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- product-form.component.html -->
+    <!-- ... outros elementos ... -->
+
+    <!-- Substitua a seção de Images no template -->
+<div *ngSwitchCase="1" class="card">
+  <div class="grid">
+    <div class="col-12">
+      <div class="card">
+        <h5>Product Images</h5>
+
+        <!-- Existing Images -->
+        <div *ngIf="images.length > 0" class="mb-4">
+          <h6>Current Images</h6>
+          <p-carousel [value]="images"
+           [numVisible]="3"
+           [numScroll]="1"
+           [circular]="false"
+           [responsiveOptions]="responsiveOptions">
+            <ng-template let-image pTemplate="item">
+              <div class="image-item p-2">
+                <img [src]="image.imageUrl" [alt]="image.description" class="w-full"/>
+                <div class="image-actions">
+                  <button pButton icon="pi pi-trash"
+                          class="p-button-rounded p-button-danger p-button-sm"
+                          (click)="removeImage(images.indexOf(image))">
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </p-carousel>
+        </div>
+
+        <!-- Upload New Images -->
+        <p-fileUpload #fileUpload
+                     [multiple]="true"
+                     accept="image/*"
+                     [maxFileSize]="1000000"
+                     (onSelect)="onImageSelect($event)"
+                     [showUploadButton]="false"
+                     [showCancelButton]="false"
+                     chooseLabel="Add Images">
+        </p-fileUpload>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Substitua a seção de Sizes no template -->
+    <div *ngSwitchCase="2" class="card">
+      <div class="grid">
+        <div class="col-12">
+          <div class="card">
+            <div class="flex justify-content-between align-items-center mb-3">
+              <h5 class="m-0">Size Management</h5>
+              <p-button icon="pi pi-plus"
+                       label="Add Size"
+                       (onClick)="addSize()">
+              </p-button>
+            </div>
+
+            <div class="size-table-container">
+              <p-table [value]="sizes"
+                      [scrollable]="true"
+                      scrollHeight="400px">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 40%">Size</th>
+                    <th style="width: 40%">Stock</th>
+                    <th style="width: 20%">Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-size let-i="index">
+                  <tr>
+                    <td>
+                      <p-dropdown [options]="standardSizes"
+                                 [(ngModel)]="size.size"
+                                 [ngModelOptions]="{standalone: true}"
+                                 optionLabel="label"
+                                 optionValue="value"
+                                 appendTo="body">
+                      </p-dropdown>
+                    </td>
+                    <td>
+                      <p-inputNumber [(ngModel)]="size.stock"
+                                   [ngModelOptions]="{standalone: true}"
+                                   [min]="0">
+                      </p-inputNumber>
+                    </td>
+                    <td>
+                      <button pButton icon="pi pi-trash"
+                              class="p-button-rounded p-button-danger"
+                              (click)="removeSize(i)">
+                      </button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div *ngSwitchCase="3" class="card">
+      <div class="grid p-fluid">
+        <div class="col-12">
+          <div class="card">
+            <h5>Product Settings</h5>
+            <div class="field">
+              <app-switch label="Active" controlName="active"
+                         [form]="resourceForm"></app-switch>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="flex justify-content-between mt-4">
+    <p-button label="Previous" icon="pi pi-chevron-left"
+              (onClick)="activeIndex = activeIndex - 1"
+              [disabled]="activeIndex === 0"
+              styleClass="p-button-outlined">
+    </p-button>
+
+    <p-button [label]="activeIndex === 3 ? 'Finish' : 'Next'"
+              [icon]="activeIndex === 3 ? 'pi pi-check' : 'pi pi-chevron-right'"
+              (onClick)="activeIndex = activeIndex + 1"
+              [disabled]="activeIndex === 3"
+              [styleClass]="activeIndex === 3 ? 'p-button-success' : ''">
+    </p-button>
+  </div>
+</form>

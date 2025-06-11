@@ -42,6 +42,9 @@ export class DropdownComponent extends BaseInput implements ControlValueAccessor
   @Output()
   changedSelection: EventEmitter<string> = new EventEmitter<string>();
 
+  @Input()
+  optionValue: string = 'id';  // Valor padrão como 'id'
+
   // Função de emissão de evento em caso de alteração de valor
   update(): void {
     this.changedSelection.emit(this.form.get(this.controlName)?.value);

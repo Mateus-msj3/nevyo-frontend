@@ -86,6 +86,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 					next:
 						(resource) => {
 							this.resource = resource;
+              console.log(resource);
 							this.resourceForm?.patchValue(resource); // binds loaded resource data to resourceForm
 							this.afterLoadResource(resource);
 						},
@@ -113,6 +114,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
 	protected createResource() {
 		const resource: T = this.jsonDataToResourceFn(this.resourceForm?.value);
+    console.log(resource);
 		this.beforeSave(resource);
 		this.resourceService.create(resource)
 			.subscribe({

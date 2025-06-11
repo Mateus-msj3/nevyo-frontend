@@ -6,89 +6,47 @@ import {CustomMessageService} from "../../shared/services/custom-message.service
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-
   constructor(private readonly customMessageService: CustomMessageService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'Erro desconhecido';
-
         if (error.error instanceof ErrorEvent) {
-          // Erro do lado do cliente
-          errorMessage = `Erro: ${error.error.message}`;
-          this.customMessageService.showError('Erro do Cliente', errorMessage);
+          // Erro do cliente
+          this.customMessageService.showError('Erro do Cliente', error.error.message);
         } else {
-          // Erros do lado do servidor
-          switch (error.status) {
-            case 400:
-              this.handleBadRequest(error);
-              break;
-            case 401:
-              this.handleUnauthorized(error);
-              break;
-            case 403:
-              this.handleForbidden(error);
-              break;
-            case 404:
-              this.handleNotFound(error);
-              break;
-            case 422:
-              this.handleUnprocessableEntity(error);
-              break;
-            case 500:
-              this.handleInternalServerError(error);
-              break;
-            case 503:
-              this.handleServiceUnavailable(error);
-              break;
-            default:
-              this.handleUnknownError(error);
-              break;
-          }
+          // Erro do servidor
+          const errorMessage = this.getServerErrorMessage(error);
+          this.handleServerError(error);
         }
 
-        return throwError(() => new Error(errorMessage));
+        return throwError(() => error);
       })
     );
   }
 
-  private handleBadRequest(error: HttpErrorResponse): void {
-    this.customMessageService.showError('Erro de Validação', error.error.message);
-  }
-
-  private handleUnauthorized(error: HttpErrorResponse): void {
-    this.customMessageService.showError('Erro 401 - Unauthorized', 'Acesso não autorizado. Faça login novamente.');
-  }
-
-  private handleForbidden(error: HttpErrorResponse): void {
-    this.customMessageService.showError('Erro 403 - Forbidden', 'Você não tem permissão para acessar este recurso.');
-  }
-
-  private handleNotFound(error: HttpErrorResponse): void {
-    this.customMessageService.showError('Erro 404 - Not Found', 'Recurso não encontrado.');
-  }
-
-  private handleUnprocessableEntity(error: HttpErrorResponse): void {
-    const errorResponse = error.error;
-    if (errorResponse && errorResponse.errors) {
-      errorResponse.errors.forEach((errorMsg: string) => {
-        this.customMessageService.showError('Erro 422 - Unprocessable Entity', errorMsg);
-      });
-    } else {
-      this.customMessageService.showError('Erro 422 - Unprocessable Entity', 'Erro de processamento.');
+  private getServerErrorMessage(error: HttpErrorResponse): string {
+    switch (error.status) {
+      case 400: return error.error?.message || 'Erro de validação';
+      case 401: return 'Acesso não autorizado';
+      case 403: return 'Acesso proibido';
+      case 404: return 'Recurso não encontrado';
+      case 422: return this.getUnprocessableEntityMessage(error);
+      case 500: return 'Erro interno do servidor';
+      case 503: return 'Serviço indisponível';
+      default: return 'Erro desconhecido';
     }
   }
 
-  private handleInternalServerError(error: HttpErrorResponse): void {
-    this.customMessageService.showError('Erro 500 - Internal Server Error', 'Erro no servidor. Tente novamente mais tarde.');
+  private getUnprocessableEntityMessage(error: HttpErrorResponse): string {
+    if (error.error?.errors && Array.isArray(error.error.errors)) {
+      return error.error.errors.join(', ');
+    }
+    return error.error?.message || 'Erro de processamento';
   }
 
-  private handleServiceUnavailable(error: HttpErrorResponse): void {
-    this.customMessageService.showError('Erro 503 - Service Unavailable', 'Serviço indisponível. Tente novamente mais tarde.');
-  }
-
-  private handleUnknownError(error: HttpErrorResponse): void {
-    this.customMessageService.showError(`Erro ${error.status} - ${error.statusText}`, 'Erro desconhecido.');
+  private handleServerError(error: HttpErrorResponse): void {
+    const message = this.getServerErrorMessage(error);
+    this.customMessageService.showError(`Erro ${error.status}`, message);
   }
 }

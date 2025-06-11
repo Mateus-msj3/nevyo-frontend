@@ -6,10 +6,11 @@ import { parseISO, format } from 'date-fns';
 
 @Injectable()
 export class ConvertDateInterceptor implements HttpInterceptor {
-
   private readonly regexYMD = /^\d{4}[-]\d{2}[-]\d{2}(T\d{2}[:]\d{2}[:]\d{2}([.]\d{3}[Z])?)?$/;
+  private processed = new WeakSet();
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    this.processed = new WeakSet(); // Reset processed objects
     const clonedRequest = req.clone({
       body: this.convertDateToString(req.body)
     });
@@ -17,11 +18,11 @@ export class ConvertDateInterceptor implements HttpInterceptor {
     return next.handle(clonedRequest).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
+          this.processed = new WeakSet(); // Reset processed objects
           const modifiedBody = this.convertDates(event.body);
-          return event.clone({ body: modifiedBody }) as HttpEvent<any>;
-        } else {
-          return event;
+          return event.clone({ body: modifiedBody });
         }
+        return event;
       })
     );
   }
@@ -30,6 +31,12 @@ export class ConvertDateInterceptor implements HttpInterceptor {
     if (!object || typeof object !== 'object') {
       return object;
     }
+
+    if (this.processed.has(object)) {
+      return object;
+    }
+
+    this.processed.add(object);
 
     if (Array.isArray(object)) {
       return object.map(item => this.convertDates(item));
@@ -41,7 +48,7 @@ export class ConvertDateInterceptor implements HttpInterceptor {
       const value = updatedObject[key];
       if (typeof value === 'string' && this.regexYMD.test(value)) {
         updatedObject[key] = parseISO(value);
-      } else if (typeof value === 'object') {
+      } else if (value && typeof value === 'object' && !this.processed.has(value)) {
         updatedObject[key] = this.convertDates(value);
       }
     });
@@ -54,6 +61,12 @@ export class ConvertDateInterceptor implements HttpInterceptor {
       return object;
     }
 
+    if (this.processed.has(object)) {
+      return object;
+    }
+
+    this.processed.add(object);
+
     if (Array.isArray(object)) {
       return object.map(item => this.convertDateToString(item));
     }
@@ -64,7 +77,7 @@ export class ConvertDateInterceptor implements HttpInterceptor {
       const value = updatedObject[key];
       if (value instanceof Date) {
         updatedObject[key] = format(value, 'yyyy-MM-dd\'T\'HH:mm:ss');
-      } else if (typeof value === 'object') {
+      } else if (value && typeof value === 'object' && !this.processed.has(value)) {
         updatedObject[key] = this.convertDateToString(value);
       }
     });

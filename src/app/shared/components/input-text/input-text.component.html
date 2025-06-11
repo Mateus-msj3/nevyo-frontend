@@ -10,6 +10,7 @@
          (input)="onInput($event)"
          (blur)="trim()"
          [maxLength]="limite"
+         [disabled]="disabled"
          autocomplete="off" />
 
   <app-error [target]="form.get(controlName)!" [label]="label"></app-error>
