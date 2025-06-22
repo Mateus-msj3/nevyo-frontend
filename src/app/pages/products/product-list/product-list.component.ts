@@ -1,4 +1,4 @@
-// product-list.component.ts
+// kit-list.component.ts
 import {Component, Injector} from '@angular/core';
 import {BaseResourceListComponent} from "../../../shared/abastracts/base-resource-list";
 import {Product} from "../../../shared/models/product";

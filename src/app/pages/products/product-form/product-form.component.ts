@@ -86,7 +86,7 @@ export class ProductFormComponent extends BaseResourceFormComponent<Product> {
 
     this.resourceForm = this.formBuilder.group({
       id: [null],
-      sku: [null],
+      sku: [{ value: null, disabled: true }],
       name: [null, [Validators.required, Validators.minLength(2)]],
       description: [null, [Validators.required]],
       price: [null, [Validators.required, Validators.min(0)]],

@@ -1,6 +1,6 @@
 <!-- kit-list.component.html -->
 <app-list-toolbar [iconClass]="'fa-solid fa-box'"
-                  [pageTitle]="'Product Management'"
+                  [pageTitle]="'Kit Management'"
                   [showFilterButton]="true"
                   (filterButtonAction)="filter()"
                   (newButtonAction)="onNew()"
@@ -15,24 +15,23 @@
         <div class="grid p-fluid formgrid">
           <!-- Basic Information -->
           <div class="col-12 mb-2">
-            <h5>Product Information</h5>
+            <h5>Kit Information</h5>
           </div>
-          <div class="col-3 field">
-            <app-input label="SKU" controlName="sku" [form]="resourceForm"></app-input>
-          </div>
-          <div class="col-3 field">
+          <div class="col-4 field">
             <app-input label="Name" controlName="name" [form]="resourceForm"></app-input>
           </div>
-          <div class="col-3 field">
-            <app-dropdown [options]="categories" optionLabel="name" optionValue="id"
-                        [form]="resourceForm" controlName="categoryId"
-                        label="Category"></app-dropdown>
-          </div>
-          <div class="col-3 field">
+          <div class="col-4 field">
             <app-dropdown [options]="genderOptions"
                         [form]="resourceForm"
                         controlName="gender"
                         label="Gender"></app-dropdown>
+          </div>
+          <div class="col-4 field">
+            <label class="block mb-2">Status</label> <!-- Add this label -->
+            <p-checkbox formControlName="active"
+                       label="Show Only Active Kits"
+                       [binary]="true">
+            </p-checkbox>
           </div>
 
           <!-- Price Range -->
@@ -41,24 +40,11 @@
           </div>
           <div class="col-6 field">
             <app-input label="Minimum Price" controlName="minPrice"
-                      [form]="resourceForm" type="number" prefix="R$"></app-input>
+                      [form]="resourceForm" type="number" prefix="$"></app-input>
           </div>
           <div class="col-6 field">
             <app-input label="Maximum Price" controlName="maxPrice"
-                      [form]="resourceForm" type="number" prefix="R$"></app-input>
-          </div>
-
-          <!-- Additional Filters -->
-          <div class="col-12 mb-2">
-            <h5>Additional Filters</h5>
-          </div>
-          <div class="col-4 field">
-            <p-checkbox formControlName="isAccessory"
-                       label="Show Only Accessories" [binary]="true"></p-checkbox>
-          </div>
-          <div class="col-4 field">
-            <p-checkbox formControlName="active"
-                       label="Show Only Active Products" [binary]="true"></p-checkbox>
+                      [form]="resourceForm" type="number" prefix="$"></app-input>
           </div>
 
           <!-- Actions -->
@@ -86,7 +72,7 @@
            [pageLinks]="3"
            [rowsPerPageOptions]="[10,25,50]"
            [totalRecords]="page?.totalElements! || 0"
-           [globalFilterFields]="['sku','name','category.name']"
+           [globalFilterFields]="['name']"
            (onPage)="search($event)"
            responsiveLayout="scroll"
            [rowHover]="true"
@@ -98,7 +84,7 @@
         <span class="p-input-icon-left w-full sm:w-20rem">
           <i class="pi pi-search"></i>
           <input pInputText type="text" (input)="onGlobalFilter(dt, $event)"
-                 placeholder="Search products..." class="w-full"/>
+                 placeholder="Search kits..." class="w-full"/>
         </span>
       </div>
     </ng-template>
@@ -106,45 +92,34 @@
     <!-- Table Header -->
     <ng-template pTemplate="header">
       <tr>
-        <th style="width:10%">Image</th>
-        <th pSortableColumn="sku" style="width:10%">SKU
-          <p-sortIcon field="sku"></p-sortIcon>
-        </th>
-        <th pSortableColumn="name" style="width:20%">Name
+        <th style="width:15%">Image</th>
+        <th pSortableColumn="name" style="width:25%">Name
           <p-sortIcon field="name"></p-sortIcon>
         </th>
-        <th pSortableColumn="price" style="width:10%">Price
+        <th pSortableColumn="price" style="width:15%">Price
           <p-sortIcon field="price"></p-sortIcon>
         </th>
-        <th style="width:15%">Stock</th>
-        <th pSortableColumn="category.name" style="width:15%">Category
-          <p-sortIcon field="category.name"></p-sortIcon>
-        </th>
-        <th style="width:10%">Status</th>
+        <th style="width:15%">Gender</th>
+        <th style="width:15%">Max Accessories</th>
+        <th style="width:15%">Status</th>
         <th style="width:10%">Actions</th>
       </tr>
     </ng-template>
 
     <!-- Table Body -->
-    <ng-template pTemplate="body" let-product>
+    <ng-template pTemplate="body" let-kit>
       <tr>
         <td>
-          <img [src]="product.images?.[0]?.imageUrl || 'assets/layout/images/product-placeholder.png'"
-               alt="Product Image" class="product-image"/>
+          <img [src]="kit.images?.[0]?.imageUrl || 'assets/layout/images/product-placeholder.png'"
+               alt="Kit Image" class="product-image"/>
         </td>
-        <td>{{ product.sku }}</td>
-        <td>{{ product.name }}</td>
-        <td>{{ product.price | currency:'BRL' }}</td>
+        <td>{{ kit.name }}</td>
+        <td>{{ kit.price | currency:'USD' }}</td>
+        <td>{{ kit.gender }}</td>
+        <td>{{ kit.maxAccessories }}</td>
         <td>
-          <div class="flex flex-column">
-            <small>Store: {{ product.quantityStore }}</small>
-            <small>Site: {{ product.quantitySite }}</small>
-          </div>
-        </td>
-        <td>{{ product.category?.name }}</td>
-        <td>
-          <p-tag [value]="product.active ? 'Active' : 'Inactive'"
-                 [severity]="product.active ? 'success' : 'danger'">
+          <p-tag [value]="kit.active ? 'Active' : 'Inactive'"
+                 [severity]="kit.active ? 'success' : 'danger'">
           </p-tag>
         </td>
         <td>
@@ -153,13 +128,13 @@
                       severity="primary"
                       [rounded]="true"
                       [outlined]="true"
-                      [routerLink]="[product.id, 'edit']">
+                      [routerLink]="[kit.id, 'edit']">
             </p-button>
             <p-button icon="pi pi-trash"
                       severity="danger"
                       [rounded]="true"
                       [outlined]="true"
-                      (onClick)="deleteResource(product)">
+                      (onClick)="deleteResource(kit)">
             </p-button>
           </div>
         </td>

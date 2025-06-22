@@ -1,0 +1,29 @@
+:host ::ng-deep {
+  // ... other styles ...
+
+  .field {
+    .p-checkbox {
+      display: flex;
+      align-items: center;
+
+      .p-checkbox-box {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+
+  td {
+    .p-checkbox {
+      display: flex;
+      justify-content: center;
+    }
+  }
+  .product-image {
+    width: 70px;  // ou outro tamanho desejado
+    height: 70px; // mantém a proporção quadrada
+    object-fit: contain; // mantém a proporção da imagem original
+    border-radius: 4px; // bordas arredondadas opcional
+    border: 1px solid #ddd; // borda opcional
+  }
+
+}

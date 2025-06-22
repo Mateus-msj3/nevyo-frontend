@@ -25,7 +25,7 @@
           <div class="card">
             <h5>Product Information</h5>
             <div class="field" *ngIf="isEditMode()">
-              <app-input label="SKU" controlName="sku" [form]="resourceForm" [disabled]="true"></app-input>
+              <app-input label="SKU" controlName="sku" [form]="resourceForm"></app-input>
             </div>
             <div class="field">
               <app-input label="Name" controlName="name" [form]="resourceForm"></app-input>
@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <!-- product-form.component.html -->
+    <!-- kit-form.component.html -->
     <!-- ... outros elementos ... -->
 
     <!-- Substitua a seção de Images no template -->

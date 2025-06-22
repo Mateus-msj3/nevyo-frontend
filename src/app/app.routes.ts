@@ -39,6 +39,12 @@ export const routes: Routes = [
         data: {breadcrumb: 'Products'}
       },
       {
+        path: 'kits',
+        canActivate: [AuthGuard, StoreSelectedGuard],
+        loadChildren: () => import('./pages/kits/kits.module').then(m => m.KitsModule),
+        data: {breadcrumb: 'Kits'}
+      },
+      {
         path: 'stores',
         canActivate: [AuthGuard, StoreSelectedGuard],
         loadChildren: () => import('./pages/stores/store.module').then(m => m.StoreModule),
