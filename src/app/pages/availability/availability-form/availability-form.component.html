@@ -1,0 +1,77 @@
+<app-edit-toolbar [pageTitle]="pageTitle"
+                  (saveCloseButtonAction)="saveAndClose()"
+                  (saveButtonAction)="save()"
+                  (closeButtonAction)="onClose()">
+</app-edit-toolbar>
+
+<div class="card">
+  <p-steps [model]="[
+    {label: 'Basic Information'},
+    {label: 'Advanced Settings'}
+  ]" [activeIndex]="activeIndex" [readonly]="false"
+  (activeIndexChange)="activeIndex = $event">
+  </p-steps>
+</div>
+
+<form [formGroup]="resourceForm" (submit)="submitForm()">
+  <div [ngSwitch]="activeIndex">
+    <!-- Basic Information -->
+    <div *ngSwitchCase="0" class="card">
+      <div class="grid p-fluid">
+        <div class="col-12">
+          <div class="card">
+            <h5>Category Information</h5>
+            <div class="field">
+              <label>Name</label>
+              <input pInputText formControlName="name"
+                     placeholder="Enter category name"
+                     [class.ng-invalid]="resourceForm.get('name')?.invalid && resourceForm.get('name')?.touched"
+                     [class.ng-dirty]="resourceForm.get('name')?.touched"/>
+              <small class="p-error" *ngIf="resourceForm.get('name')?.invalid && resourceForm.get('name')?.touched">
+                Name is required and must be at least 2 characters
+              </small>
+            </div>
+            <div class="field">
+              <label>Description</label>
+              <textarea pInputTextarea formControlName="description"
+                        [rows]="5" [autoResize]="true"
+                        placeholder="Enter category description"
+                        [class.ng-invalid]="resourceForm.get('description')?.invalid && resourceForm.get('description')?.touched"
+                        [class.ng-dirty]="resourceForm.get('description')?.touched">
+              </textarea>
+              <small class="p-error" *ngIf="resourceForm.get('description')?.invalid && resourceForm.get('description')?.touched">
+                Description is required and must be at least 2 characters
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced Settings -->
+    <div *ngSwitchCase="1" class="card">
+      <div class="grid p-fluid">
+        <div class="col-12">
+          <div class="card">
+            <h5>Additional Settings</h5>
+            <!-- Add any additional fields here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="flex justify-content-between mt-4">
+    <p-button label="Previous" icon="pi pi-chevron-left"
+              (onClick)="activeIndex = activeIndex - 1"
+              [disabled]="activeIndex === 0"
+              styleClass="p-button-outlined"></p-button>
+
+    <p-button [label]="activeIndex === 1 ? 'Finish' : 'Next'"
+              [icon]="activeIndex === 1 ? 'pi pi-check' : 'pi pi-chevron-right'"
+              (onClick)="activeIndex = activeIndex + 1"
+              [disabled]="activeIndex === 1"
+              [styleClass]="activeIndex === 1 ? 'p-button-success' : ''"></p-button>
+  </div>
+</form>

@@ -1,0 +1,95 @@
+:host ::ng-deep {
+  // Estilos do calendário
+  .fc {
+    .fc-toolbar {
+      margin-bottom: 1.5rem;
+
+      .fc-button {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+
+        &:hover {
+          background-color: var(--primary-600);
+          border-color: var(--primary-600);
+        }
+      }
+    }
+
+    .availability-event {
+      padding: 0.25rem;
+      text-align: center;
+
+      .quantity {
+        font-weight: bold;
+        color: var(--surface-900);
+      }
+    }
+
+  }
+
+  // Responsividade
+  @media screen and (max-width: 768px) {
+    .fc-header-toolbar {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
+  // Estilos do diálogo
+  .p-dialog {
+    .status-tag {
+      &.available { background-color: #28a745; }
+      &.partial { background-color: #ffc107; }
+      &.unavailable { background-color: #dc3545; }
+      &.blocked { background-color: #6c757d; }
+    }
+  }
+
+  // Estilos existentes...
+
+  // Estilos dos botões e filtros
+  .p-panel {
+    .p-panel-content {
+      .p-selectbutton {
+        .p-button {
+          padding: 0.5rem 1rem;
+        }
+      }
+    }
+  }
+
+  // Ajustes no diálogo
+  .p-dialog {
+    .p-dialog-content {
+      padding: 2rem;
+    }
+
+    .p-dialog-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--surface-200);
+    }
+  }
+
+  // Ajuste nos botões em geral
+  .p-button {
+    &.p-button-outlined {
+      &:enabled:hover {
+        background: var(--surface-100);
+      }
+    }
+  }
+
+  // Espaçamento consistente
+  .gap-2 {
+    gap: 0.5rem;
+  }
+
+  // Ajuste na responsividade
+  @media screen and (max-width: 768px) {
+    .p-selectbutton {
+      .p-button {
+        flex: 1;
+      }
+    }
+  }
+}
